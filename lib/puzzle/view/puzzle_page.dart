@@ -20,9 +20,7 @@ class PuzzlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ThemeBloc(
-        themes: const [
-          SimpleTheme(),
-        ],
+        themes: const [SimpleTheme()],
       ),
       child: const PuzzleView(),
     );
@@ -50,7 +48,7 @@ class PuzzleView extends StatelessWidget {
           ticker: const Ticker(),
         ),
         child: BlocProvider(
-          create: (context) => PuzzleBloc(4)
+          create: (context) => PuzzleBloc(3)
             ..add(
               PuzzleInitialized(
                 shufflePuzzle: shufflePuzzle,

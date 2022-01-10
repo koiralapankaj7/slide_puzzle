@@ -7,7 +7,9 @@ import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
-import 'package:very_good_slide_puzzle/typography/typography.dart';
+
+const _url =
+    'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg';
 
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
@@ -57,30 +59,46 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
       right: 0,
       bottom: 0,
       child: ResponsiveLayoutBuilder(
-        small: (_, __) => SizedBox(
-          width: 184,
-          height: 118,
-          child: Image.asset(
-            'assets/images/simple_dash_small.png',
-            key: const Key('simple_puzzle_dash_small'),
+        small: (_, __) => Padding(
+          padding: const EdgeInsets.all(8),
+          child: SizedBox(
+            width: 150,
+            height: 150,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.network(
+                _url,
+                key: const Key('simple_puzzle_dash_small'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
         ),
-        medium: (_, __) => SizedBox(
-          width: 380.44,
-          height: 214,
-          child: Image.asset(
-            'assets/images/simple_dash_medium.png',
-            key: const Key('simple_puzzle_dash_medium'),
+        medium: (_, __) => Padding(
+          padding: const EdgeInsets.all(20),
+          child: SizedBox(
+            width: 300,
+            height: 300,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.network(
+                _url,
+                key: const Key('simple_puzzle_dash_medium'),
+              ),
+            ),
           ),
         ),
         large: (_, __) => Padding(
-          padding: const EdgeInsets.only(bottom: 53),
+          padding: const EdgeInsets.all(53),
           child: SizedBox(
-            width: 568.99,
-            height: 320,
-            child: Image.asset(
-              'assets/images/simple_dash_large.png',
-              key: const Key('simple_puzzle_dash_large'),
+            width: 500,
+            height: 500,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.network(
+                _url,
+                key: const Key('simple_puzzle_dash_large'),
+              ),
             ),
           ),
         ),
@@ -276,8 +294,8 @@ class SimplePuzzleBoard extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: size,
-      mainAxisSpacing: spacing,
-      crossAxisSpacing: spacing,
+      mainAxisSpacing: 1,
+      crossAxisSpacing: 1,
       children: tiles,
     );
   }
@@ -316,35 +334,38 @@ class SimplePuzzleTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
 
-    return TextButton(
-      style: TextButton.styleFrom(
-        primary: PuzzleColors.white,
-        textStyle: PuzzleTextStyle.headline2.copyWith(
-          fontSize: tileFontSize,
-        ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
-          ),
-        ),
-      ).copyWith(
-        foregroundColor: MaterialStateProperty.all(PuzzleColors.white),
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          (states) {
-            if (tile.value == state.lastTappedTile?.value) {
-              return theme.pressedColor;
-            } else if (states.contains(MaterialState.hovered)) {
-              return theme.hoverColor;
-            } else {
-              return theme.defaultColor;
-            }
-          },
-        ),
-      ),
-      onPressed: state.puzzleStatus == PuzzleStatus.incomplete
+    return InkWell(
+      hoverColor: theme.hoverColor,
+      highlightColor: theme.pressedColor,
+      // style: TextButton.styleFrom(
+      //   primary: PuzzleColors.white,
+      //   textStyle: PuzzleTextStyle.headline2.copyWith(
+      //     fontSize: tileFontSize,
+      //   ),
+      //   shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(
+      //       Radius.circular(12),
+      //     ),
+      //   ),
+      // ).copyWith(
+      //   foregroundColor: MaterialStateProperty.all(PuzzleColors.white),
+      //   backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+      //     (states) {
+      //       if (tile.value == state.lastTappedTile?.value) {
+      //         return theme.pressedColor;
+      //       } else if (states.contains(MaterialState.hovered)) {
+      //         return theme.hoverColor;
+      //       } else {
+      //         return theme.defaultColor;
+      //       }
+      //     },
+      //   ),
+      // ),
+      onTap: state.puzzleStatus == PuzzleStatus.incomplete
           ? () => context.read<PuzzleBloc>().add(TileTapped(tile))
           : null,
-      child: Text(tile.value.toString()),
+      // child: Text(tile.value.toString()),
+      child: Image.memory(tile.bytes),
     );
   }
 }

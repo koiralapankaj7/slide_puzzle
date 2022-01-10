@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 
@@ -7,11 +9,15 @@ import 'package:very_good_slide_puzzle/models/models.dart';
 class Tile extends Equatable {
   /// {@macro tile}
   const Tile({
+    required this.bytes,
     required this.value,
     required this.correctPosition,
     required this.currentPosition,
     this.isWhitespace = false,
   });
+
+  ///
+  final Uint8List bytes;
 
   /// Value representing the correct position of [Tile] in a list.
   final int value;
@@ -29,6 +35,7 @@ class Tile extends Equatable {
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({required Position currentPosition}) {
     return Tile(
+      bytes: bytes,
       value: value,
       correctPosition: correctPosition,
       currentPosition: currentPosition,
@@ -38,6 +45,7 @@ class Tile extends Equatable {
 
   @override
   List<Object> get props => [
+        bytes,
         value,
         correctPosition,
         currentPosition,

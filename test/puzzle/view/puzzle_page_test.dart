@@ -271,7 +271,7 @@ void main() {
         when(() => timerBloc.state).thenReturn(timerState);
 
         await tester.pumpApp(
-          PuzzleBoard(),
+          PuzzleBoard(size: 30),
           themeBloc: themeBloc,
           timerBloc: timerBloc,
           puzzleBloc: puzzleBloc,

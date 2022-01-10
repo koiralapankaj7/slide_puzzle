@@ -26,6 +26,12 @@ class _AppState extends State<App> {
 
     Future<void>.delayed(const Duration(milliseconds: 20), () {
       precacheImage(
+        Image.network(
+                'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg')
+            .image,
+        context,
+      );
+      precacheImage(
         Image.asset('assets/images/shuffle_icon.png').image,
         context,
       );
